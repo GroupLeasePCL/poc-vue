@@ -1,41 +1,6 @@
 <template>
     <div>
-<el-table
-                :data="tableData"
-                border
-                style="width: 100%"
-                class="table">
-            <el-table-column
-                    fixed
-                    prop="id"
-                    label="Applicant ID"
-                    width="150">
-            </el-table-column>
-            <el-table-column
-                    fixed
-                    prop="firstName"
-                    label="First Name"
-                    width="150">
-            </el-table-column>
-            <el-table-column
-                    fixed
-                    prop="lastName"
-                    label="Last Name"
-                    width="150">
-            </el-table-column>
-            <el-table-column
-                    fixed
-                    prop="email"
-                    label="Email Address"
-                    width="150">
-            </el-table-column>
-            <el-table-column
-                    fixed
-                    prop="address"
-                    label="Address"
-                    width="300">
-            </el-table-column>
-          </el-table>
+<b-table striped hover :items="tableData" :fields="fields"></b-table>
     </div>
 </template>
 
@@ -43,30 +8,38 @@
 // import Bus from '../eventBus'
 // import DbModal from './DbModal.vue'
 
+// import axios from 'axios'
+import {AXIOS} from './http-common'
+
 export default {
   data () {
     return {
-      tableData: [{
-        'id': '1234',
-        'firstName': 'Test 123',
-        'lastName': 'abc',
-        'email': 'bbbb@mail.com',
-        'address': '123 bbb hhsh'
-      },
-      {
-        'id': '1235',
-        'firstName': 'Test 123',
-        'lastName': 'abc',
-        'email': 'bbbb@mail.com',
-        'address': '123 bbb hhsh'
-      }],
-      apiUrl:
-        'http://172.255.152.115:8081/employment-applications?page=1&pageSize=10',
+      fields: ['firstName', 'lastName', 'email', 'address'],
+      tableData: [],
       total: 0,
       pageSize: 10,
       currentPage: 1,
       dialogFormVisible: false,
       form: ''
+    }
+  },
+  methods: {
+    // Fetches posts when the component is created.
+    callRestService () {
+      AXIOS.get('employment-applications')
+        .then(response => {
+          // JSON responses are automatically parsed.
+          this.response = response.data
+          console.log(response.data)
+          this.tableData = response.data
+          this.httpStatusCode = response.status
+          this.httpStatusText = response.statusText
+          this.headers = response.headers
+          this.fullResponse = response
+        })
+        .catch(e => {
+          this.errors.push(e)
+        })
     }
   }
 }

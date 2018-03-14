@@ -8,11 +8,17 @@ import {
 } from 'element-ui'
 import App from './App.vue'
 import 'element-theme-default'
+import BootstrapVue from 'bootstrap-vue'
+import 'bootstrap/dist/css/bootstrap.css'
+import 'bootstrap-vue/dist/bootstrap-vue.css'
 
 Vue.config.productionTip = false
 
 Vue.use(Table)
 Vue.use(TableColumn)
+
+// Bootstrap
+Vue.use(BootstrapVue)
 
 /* eslint-disable no-new */
 // eslint-disable-next-line
