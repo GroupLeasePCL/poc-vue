@@ -2,7 +2,7 @@
   <div>
     <b-row>
       <b-col>
-       <b-form-input v-model="searchText" type="text" placeholder="Search"></b-form-input>
+       <b-form-input v-model="searchText" type="text" placeholder="Search" @keyup.native="search"></b-form-input>
       </b-col>
       <b-col lg="6">
       </b-col>
@@ -31,25 +31,21 @@ export default {
       currentPage: 1,
       searchText: '',
       dialogFormVisible: false,
-      form: ''
+      form: '',
+      errors: [],
+      searchParam: {}
     }
   },
   mounted () {
-    this.getApplicationData()
+    this.search()
   },
   methods: {
     // Fetches posts when the component is created.
     getApplicationData () {
-      AXIOS.get('employment-applications', {
-        params: {
-          page: this.currentPage - 1,
-          pageSize: this.pageSize
-        }
-      })
+      AXIOS.get('employment-applications', this.searchParam)
         .then(response => {
           // JSON responses are automatically parsed.
           this.response = response.data
-          console.log(response.data)
           this.tableData = response.data
           this.total = response.data.length
           this.httpStatusCode = response.status
@@ -60,6 +56,18 @@ export default {
         .catch(e => {
           this.errors.push(e)
         })
+    },
+    search (event) {
+      console.log('searching data...')
+      let params = {page: this.currentPage - 1, pageSize: this.pageSize}
+
+      if (this.searchText.trim().length > 0) {
+        console.log(this.searchText)
+        params.firstName = this.searchText
+      }
+
+      this.searchParam = {params: params}
+      this.getApplicationData()
     }
   }
 }
