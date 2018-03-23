@@ -5,6 +5,7 @@
        <b-form-input v-model="searchText" type="text" placeholder="Search" @keyup.native="search"></b-form-input>
       </b-col>
       <b-col lg="6">
+        <b-form-checkbox-group v-model="searchBy" :options="searchByOptions"></b-form-checkbox-group>
       </b-col>
     </b-row>
 
@@ -33,7 +34,13 @@ export default {
       dialogFormVisible: false,
       form: '',
       errors: [],
-      searchParam: {}
+      searchParam: {},
+      searchBy: [],
+      searchByOptions: [
+        {text: 'First Name', value: 'firstName'},
+        {text: 'Last Name', value: 'lastName'},
+        {text: 'Email', value: 'email'}
+      ]
     }
   },
   mounted () {
@@ -61,9 +68,21 @@ export default {
       console.log('searching data...')
       let params = {page: this.currentPage - 1, pageSize: this.pageSize}
 
-      if (this.searchText.trim().length > 0) {
+      if (this.searchText.trim().length > 0 && this.searchBy.length > 0) {
         console.log(this.searchText)
-        params.firstName = this.searchText
+        let selectedOption = ''
+        for (var i = 0; i < this.searchBy.length; i++) {
+          selectedOption = this.searchBy[i]
+          if (selectedOption === 'firstName') {
+            params.firstName = this.searchText
+          }
+          if (selectedOption === 'lastName') {
+            params.lastName = this.searchText
+          }
+          if (selectedOption === 'email') {
+            params.email = this.searchText
+          }
+        }
       }
 
       this.searchParam = {params: params}
