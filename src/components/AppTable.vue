@@ -1,6 +1,6 @@
 <template>
     <div>
-<b-table striped hover :items="tableData" :fields="fields"></b-table>
+<b-table striped hover head-variant="dark" :items="tableData" :fields="fields" class="rectangle-3"></b-table>
     </div>
 </template>
 
@@ -14,19 +14,27 @@ import {AXIOS} from './http-common'
 export default {
   data () {
     return {
-      fields: ['firstName', 'lastName', 'email', 'address'],
+      fields: ['applicationId', 'firstName', 'lastName', 'email', 'address'],
       tableData: [],
       total: 0,
       pageSize: 10,
-      currentPage: 1,
+      currentPage: 0,
       dialogFormVisible: false,
       form: ''
     }
   },
+  mounted () {
+    this.getApplicationData()
+  },
   methods: {
     // Fetches posts when the component is created.
-    callRestService () {
-      AXIOS.get('employment-applications')
+    getApplicationData () {
+      AXIOS.get('employment-applications', {
+        params: {
+          page: this.currentPage,
+          pageSize: this.pageSize
+        }
+      })
         .then(response => {
           // JSON responses are automatically parsed.
           this.response = response.data
@@ -44,14 +52,3 @@ export default {
   }
 }
 </script>
-
-<style>
-.table {
-  margin-top: 30px;
-}
-
-.pagination {
-  margin-top: 10px;
-  float: right;
-}
-</style>
