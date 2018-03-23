@@ -1,19 +1,19 @@
 <template>
   <div id="app">
    <div class="page-title"> New Employee Registration</div>
-   <div id="container">
-    <AppTable/>
+   <div class="container">
+    <ApplicationTable/>
    </div>
   </div>
 </template>
 
 <script>
-import AppTable from './components/AppTable.vue'
+import ApplicationTable from './components/application-table.vue'
 
 export default {
   name: 'App',
   components: {
-    AppTable
+    ApplicationTable
   }
 }
 </script>

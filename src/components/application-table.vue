@@ -1,14 +1,10 @@
 <template>
     <div>
-<b-table striped hover head-variant="dark" :items="tableData" :fields="fields" class="rectangle-3"></b-table>
+<b-table striped hover head-variant="dark" :items="tableData" :fields="fields" ></b-table>
     </div>
 </template>
 
 <script>
-// import Bus from '../eventBus'
-// import DbModal from './DbModal.vue'
-
-// import axios from 'axios'
 import {AXIOS} from './http-common'
 
 export default {
