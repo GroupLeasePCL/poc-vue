@@ -2,20 +2,16 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
 
-import {
-  Table,
-  TableColumn
-} from 'element-ui'
 import App from './App.vue'
-import 'element-theme-default'
 import BootstrapVue from 'bootstrap-vue'
+import VueMaterial from 'vue-material'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
+import 'vue-material/dist/vue-material.min.css'
 
 Vue.config.productionTip = false
 
-Vue.use(Table)
-Vue.use(TableColumn)
+Vue.use(VueMaterial)
 
 // Bootstrap
 Vue.use(BootstrapVue)

@@ -1,11 +1,26 @@
 <template>
-    <div>
-<b-table striped hover head-variant="dark" :items="tableData" :fields="fields" ></b-table>
-    </div>
+  <div>
+    <b-row>
+      <b-col>
+       <b-form-input v-model="searchText" type="text" placeholder="Search" @keyup.native="search"></b-form-input>
+      </b-col>
+      <b-col lg="6">
+        <b-form-checkbox-group v-model="searchBy" :options="searchByOptions"></b-form-checkbox-group>
+      </b-col>
+    </b-row>
+
+    <b-table striped hover head-variant="dark" :items="tableData" :fields="fields" ></b-table>
+    <b-row>
+      <b-col>Total: {{total}} employees</b-col>
+      <b-col lg="6">
+      <b-pagination size="sm" :total-rows="total" v-model="currentPage" :per-page="pageSize"></b-pagination>
+     </b-col>
+    </b-row>
+  </div>
 </template>
 
 <script>
-import {AXIOS} from './http-common'
+import { AXIOS } from './http-common'
 
 export default {
   data () {
@@ -14,28 +29,32 @@ export default {
       tableData: [],
       total: 0,
       pageSize: 10,
-      currentPage: 0,
+      currentPage: 1,
+      searchText: '',
       dialogFormVisible: false,
-      form: ''
+      form: '',
+      errors: [],
+      searchParam: {},
+      searchBy: [],
+      searchByOptions: [
+        {text: 'First Name', value: 'firstName'},
+        {text: 'Last Name', value: 'lastName'},
+        {text: 'Email', value: 'email'}
+      ]
     }
   },
   mounted () {
-    this.getApplicationData()
+    this.search()
   },
   methods: {
     // Fetches posts when the component is created.
     getApplicationData () {
-      AXIOS.get('employment-applications', {
-        params: {
-          page: this.currentPage,
-          pageSize: this.pageSize
-        }
-      })
+      AXIOS.get('employment-applications', this.searchParam)
         .then(response => {
           // JSON responses are automatically parsed.
           this.response = response.data
-          console.log(response.data)
           this.tableData = response.data
+          this.total = response.data.length
           this.httpStatusCode = response.status
           this.httpStatusText = response.statusText
           this.headers = response.headers
@@ -44,6 +63,30 @@ export default {
         .catch(e => {
           this.errors.push(e)
         })
+    },
+    search (event) {
+      console.log('searching data...')
+      let params = {page: this.currentPage - 1, pageSize: this.pageSize}
+
+      if (this.searchText.trim().length > 0 && this.searchBy.length > 0) {
+        console.log(this.searchText)
+        let selectedOption = ''
+        for (var i = 0; i < this.searchBy.length; i++) {
+          selectedOption = this.searchBy[i]
+          if (selectedOption === 'firstName') {
+            params.firstName = this.searchText
+          }
+          if (selectedOption === 'lastName') {
+            params.lastName = this.searchText
+          }
+          if (selectedOption === 'email') {
+            params.email = this.searchText
+          }
+        }
+      }
+
+      this.searchParam = {params: params}
+      this.getApplicationData()
     }
   }
 }
