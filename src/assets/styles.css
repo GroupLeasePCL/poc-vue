@@ -1,0 +1,22 @@
+.table {
+	height: 60px;
+	width: 1140px;
+	border: 1px solid #DEDEDE;
+	background-color: #FFFFFF;
+    box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
+}
+.rectangle-4 {	height: 60px;	width: 1110px;	background-color: #27282C;}
+
+#app {
+    font-family: 'Roboto';
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    color: #2c3e50;
+    margin-top: 10px;
+  }
+.page-title{
+    font-size: 24px;
+    font-weight: bold;
+    line-height: 32px;
+    text-align: center;
+}
