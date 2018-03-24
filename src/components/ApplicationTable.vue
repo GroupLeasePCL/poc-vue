@@ -11,16 +11,16 @@
 
     <b-table striped hover head-variant="dark" :items="tableData" :fields="fields" >
       <template slot="detail" slot-scope="data">
-        <b-button size="sm" @click="editItem(data.index,tableData)"></b-button>
+        <b-button size="sm" @click="editItem(data.index,tableData)">detail</b-button>
       </template>
     </b-table>
-    <!-- <application-detail :show="dialogFormVisible" :application="application"></application-detail> -->
+    <application-detail :show-modal="showDetail" :application="application" v-on:cancelmodal="closeDialog"></application-detail>
   </div>
 </template>
 
 <script>
 import { AXIOS } from './http-common'
-// import ApplicationDetail from './application-detail.vue'
+import ApplicationDetail from './ApplicationDetail.vue'
 
 export default {
   data () {
@@ -30,8 +30,8 @@ export default {
       limit: 10,
       offset: 0,
       searchText: '',
-      dialogFormVisible: false,
-      application: '',
+      showDetail: false,
+      application: {},
       errors: [],
       searchParam: {},
       searchBy: [],
@@ -42,22 +42,17 @@ export default {
       ]
     }
   },
+  components: {
+    ApplicationDetail
+  },
   mounted () {
     this.search()
   },
   methods: {
-    // Fetches posts when the component is created.
     getApplicationData () {
       AXIOS.get('employment-applications', this.searchParam)
         .then(response => {
-          // JSON responses are automatically parsed.
-          this.response = response.data
           this.tableData = response.data
-          this.total = response.data.length
-          this.httpStatusCode = response.status
-          this.httpStatusText = response.statusText
-          this.headers = response.headers
-          this.fullResponse = response
         })
         .catch(e => {
           this.errors.push(e)
@@ -87,10 +82,19 @@ export default {
       this.searchParam = {params: params}
       this.getApplicationData()
     },
-    editItem: function (index, rows) {
-      console.log(index)
-      // this.dialogFormVisible = true;
-      // const appId = rows[index].applicationId;
+    editItem: function (index, tableData) {
+      const appId = tableData[index].applicationId
+      AXIOS.get('employment-applications/' + appId + '/personal-info')
+        .then(response => {
+          this.application = response.data
+          this.showDetail = true
+        })
+        .catch(e => {
+          this.errors.push(e)
+        })
+    },
+    closeDialog: function () {
+      this.showDetail = false
     }
   }
 }
