@@ -12,7 +12,7 @@
 <script>
 import NavigationBar from './components/NavigationBar'
 import ApplicationForm from './components/ApplicationForm'
-import ApplicationTable from './components/application-table.vue'
+import ApplicationTable from './components/ApplicationTable.vue'
 
 export default {
   name: 'App',

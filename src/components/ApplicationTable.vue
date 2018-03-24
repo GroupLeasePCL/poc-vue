@@ -9,30 +9,36 @@
       </b-col>
     </b-row>
 
-    <b-table striped hover head-variant="dark" :items="tableData" :fields="fields" ></b-table>
+    <b-table striped hover head-variant="dark" :items="tableData" :fields="fields" >
+      <template slot="edit-details" slot-scope="row">
+        <b-button size="sm" @click="editItem(row.$index,tableData)" ></b-button>
+      </template>
+    </b-table>
     <b-row>
       <b-col>Total: {{total}} employees</b-col>
       <b-col lg="6">
       <b-pagination size="sm" :total-rows="total" v-model="currentPage" :per-page="pageSize"></b-pagination>
      </b-col>
     </b-row>
+    <!-- <application-detail :show="dialogFormVisible" :application="application"></application-detail> -->
   </div>
 </template>
 
 <script>
 import { AXIOS } from './http-common'
+// import ApplicationDetail from './application-detail.vue'
 
 export default {
   data () {
     return {
-      fields: ['applicationId', 'firstName', 'lastName', 'email', 'address'],
+      fields: ['firstName', 'lastName', 'email', 'address', 'edit_details'],
       tableData: [],
       total: 0,
       pageSize: 10,
       currentPage: 1,
       searchText: '',
       dialogFormVisible: false,
-      form: '',
+      application: '',
       errors: [],
       searchParam: {},
       searchBy: [],
@@ -87,6 +93,11 @@ export default {
 
       this.searchParam = {params: params}
       this.getApplicationData()
+    },
+    editItem: function (index, rows) {
+      console.log(index)
+      // this.dialogFormVisible = true;
+      // const appId = rows[index].applicationId;
     }
   }
 }
