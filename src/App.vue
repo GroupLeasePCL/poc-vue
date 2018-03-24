@@ -1,8 +1,8 @@
 <template>
   <div id="app">
-    <div class="page-title"> New Employee Registration</div>
+    <NavigationBar/>
     <div class="container">
-      <NavigationBar/>
+      <div class="page-title"> New Employee Registration</div>
       <ApplicationForm/>
       <ApplicationTable/>
    </div>
