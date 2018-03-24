@@ -1,29 +1,15 @@
 <template>
-  <div id="app">
-    <NavigationBar/>
-    <div class="container">
-      <div class="page-title"> New Employee Registration</div>
-      <ApplicationForm/>
-      <ApplicationTable/>
+   <div id="app">
+     <router-view/>
    </div>
-  </div>
 </template>
 
 <script>
-import NavigationBar from './components/NavigationBar'
-import ApplicationForm from './components/ApplicationForm'
-import ApplicationTable from './components/ApplicationTable.vue'
-
+import Main from './components/Main'
 export default {
   name: 'App',
   components: {
-    NavigationBar,
-    ApplicationForm,
-    ApplicationTable
+    Main
   }
 }
 </script>
-
-<style>
-@import './assets/styles.css'
-</style>
