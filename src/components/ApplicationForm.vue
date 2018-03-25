@@ -8,10 +8,10 @@
             <b-collapse id='employmentApplication'>
                 <b-card-body>
                     <b-form @submit='onSubmit' @reset='onReset'>
-                        <PersonalInformationForm></PersonalInformationForm>
+                        <PersonalInformationForm v-model="personalInformationData"></PersonalInformationForm>
                         <div class='line-2'/>
 
-                        <EducationForm></EducationForm>
+                        <EducationForm v-model="educationData"></EducationForm>
                         <div class='line-2'/>
 
                         <WorkingExperienceForm></WorkingExperienceForm>
@@ -30,7 +30,7 @@
 import PersonalInformationForm from './application/PersonalInformationForm'
 import EducationForm from './application/EducationForm'
 import WorkingExperienceForm from './application/WorkingExperienceForm'
-// import EmployeeApplicationService from '../service/EmployeeApplicationService.js'
+import EmployeeApplicationService from '../service/EmployeeApplicationService.js'
 
 export default {
   name: 'ApplicationForm',
@@ -41,12 +41,17 @@ export default {
   },
   data () {
     return {
+      personalInformationData: {},
+      educationData: {},
+      workingExperienceData: {}
     }
   },
   methods: {
     onSubmit (evt) {
       evt.preventDefault()
-      // EmployeeApplicationService.create(application)
+      let applicationData = JSON.stringify(Object.assign(this.personalInformationData, this.educationData, this.workingExperienceData))
+      console.log(applicationData)
+      EmployeeApplicationService.create(applicationData)
     },
     onReset (evt) {
       evt.preventDefault()
