@@ -50,7 +50,6 @@ export default {
     onSubmit (evt) {
       evt.preventDefault()
       let applicationData = JSON.stringify(Object.assign(this.personalInformationData, this.educationData, this.workingExperienceData))
-      console.log(applicationData)
       EmployeeApplicationService.create(applicationData)
     },
     onReset (evt) {
