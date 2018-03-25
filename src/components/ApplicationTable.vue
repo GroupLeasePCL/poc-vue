@@ -21,6 +21,7 @@
 <script>
 import { AXIOS } from '../service/http-common'
 import ApplicationDetail from './ApplicationDetail'
+import EmployeeApplicationService from '../service/EmployeeApplicationService'
 
 export default {
   data () {
@@ -33,7 +34,6 @@ export default {
       showDetail: false,
       application: {},
       errors: [],
-      searchParam: {},
       searchBy: [],
       searchByOptions: [
         {text: 'First Name', value: 'firstName'},
@@ -48,39 +48,40 @@ export default {
   mounted () {
     this.search()
   },
+  watch: {
+    searchBy: function () {
+      this.fetchApplications()
+    }
+  },
   methods: {
-    getApplicationData () {
-      AXIOS.get('employment-applications', this.searchParam)
-        .then(response => {
-          this.tableData = response.data
+    fetchApplications () {
+      let searchParam = {}
+      if (this.searchText.trim().length > 0 && this.searchBy.length > 0) {
+        let selectedOption = ''
+        for (var i = 0; i < this.searchBy.length; i++) {
+          selectedOption = this.searchBy[i]
+          if (selectedOption === 'firstName') {
+            searchParam.firstName = this.searchText
+          }
+          if (selectedOption === 'lastName') {
+            searchParam.lastName = this.searchText
+          }
+          if (selectedOption === 'email') {
+            searchParam.email = this.searchText
+          }
+        }
+      }
+
+      EmployeeApplicationService.fetch(this.offset, this.limit, searchParam)
+        .then(data => {
+          this.tableData = data
         })
         .catch(e => {
           this.errors.push(e)
         })
     },
     search (event) {
-      console.log('searching data...')
-      let params = {offset: this.offset, limit: this.limit}
-
-      if (this.searchText.trim().length > 0 && this.searchBy.length > 0) {
-        console.log(this.searchText)
-        let selectedOption = ''
-        for (var i = 0; i < this.searchBy.length; i++) {
-          selectedOption = this.searchBy[i]
-          if (selectedOption === 'firstName') {
-            params.firstName = this.searchText
-          }
-          if (selectedOption === 'lastName') {
-            params.lastName = this.searchText
-          }
-          if (selectedOption === 'email') {
-            params.email = this.searchText
-          }
-        }
-      }
-
-      this.searchParam = {params: params}
-      this.getApplicationData()
+      this.fetchApplications()
     },
     editItem: function (index, tableData) {
       const appId = tableData[index].applicationId
