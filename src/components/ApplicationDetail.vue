@@ -70,7 +70,7 @@
   </div>
 </template>
 <script>
-import { AXIOS } from './http-common'
+import { AXIOS } from '../service/http-common'
 
 export default {
   data () {

@@ -19,8 +19,8 @@
 </template>
 
 <script>
-import { AXIOS } from './http-common'
-import ApplicationDetail from './ApplicationDetail.vue'
+import { AXIOS } from '../service/http-common'
+import ApplicationDetail from './ApplicationDetail'
 
 export default {
   data () {
