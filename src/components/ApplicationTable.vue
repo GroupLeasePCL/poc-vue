@@ -11,7 +11,7 @@
 
     <b-table striped hover head-variant="dark" :items="tableData" :fields="fields" >
       <template slot="detail" slot-scope="data">
-        <b-button size="sm" @click="editItem(data.index,tableData)">detail</b-button>
+        <b-button size="sm" @click="displayDetail(data.index, tableData)">detail</b-button>
       </template>
     </b-table>
     <application-detail :show-modal="showDetail" :application="application" v-on:cancelmodal="closeDialog"></application-detail>
@@ -19,7 +19,6 @@
 </template>
 
 <script>
-import { AXIOS } from '../service/http-common'
 import ApplicationDetail from './ApplicationDetail'
 import EmployeeApplicationService from '../service/EmployeeApplicationService'
 
@@ -83,11 +82,11 @@ export default {
     search (event) {
       this.fetchApplications()
     },
-    editItem: function (index, tableData) {
+    displayDetail: function (index, tableData) {
       const appId = tableData[index].applicationId
-      AXIOS.get('employment-applications/' + appId + '/personal-info')
-        .then(response => {
-          this.application = response.data
+      EmployeeApplicationService.getPersonalInformation(appId)
+        .then(data => {
+          this.application = data
           this.showDetail = true
         })
         .catch(e => {

@@ -70,8 +70,7 @@
   </div>
 </template>
 <script>
-import { AXIOS } from '../service/http-common'
-
+import EmployeeApplicationService from '../service/EmployeeApplicationService'
 export default {
   data () {
     return {
@@ -87,9 +86,7 @@ export default {
       event.preventDefault()
       console.log('saving data...')
       console.log('firstName' + this.application.firstName)
-      AXIOS.put('employment-applications/' + this.application.applicationId + '/personal-info',
-        { body: this.application }
-      )
+      EmployeeApplicationService.updatePersonalInformation(this.application.applicationId, this.application)
         .then(response => {})
         .catch(e => {
           this.errors.push(e)
