@@ -14,7 +14,7 @@
                         <EducationForm v-model="educationData"></EducationForm>
                         <div class='line-2'/>
 
-                        <WorkingExperienceForm></WorkingExperienceForm>
+                        <WorkingExperienceForm v-model="workingExperienceData"></WorkingExperienceForm>
                         <div align='right'>
                             <b-button type='reset' variant='danger' style='width: 250px'>Cancel</b-button>
                             <b-button type='submit' variant='outline-success' style='width: 250px'>Create</b-button>
