@@ -1,81 +1,57 @@
 <template>
   <div>
     <b-modal ref="detailModal" v-model="showModal" title="Applicant Detail" hide-footer>
-        <b-form @submit="onSave">
-            <b-row>
-                <b-col lg="6" sm="12">
-                    <b-form-group label="First Name:" label-for="firstName">
-                        <b-form-input v-model="application.firstName" id="firstName"></b-form-input>
-                    </b-form-group>
-                </b-col>
-                <b-col>
-                    <b-form-group label="Last Name:" label-for="lastName">
-                        <b-form-input v-model="application.lastName" id="lastName"></b-form-input>
-                     </b-form-group>
-                </b-col>
-          </b-row>
-          <b-row>
-              <b-col lg="6" sm="12">
-                    <b-form-group label="Birth Date:" label-for="birthDate">
-                        <b-form-input type="date" v-model="application.birthDate" id="birthDate"></b-form-input>
-                    </b-form-group>
-                </b-col>
-          </b-row>
-          <b-row>
-              <b-col>
-                    <b-form-group label="Address:" label-for="address">
-                        <b-form-input v-model="application.address" id="address"></b-form-input>
-                     </b-form-group>
-                </b-col>
-          </b-row>
-          <b-row>
-              <b-col lg="6" sm="12">
-                    <b-form-group label="Email Address:" label-for="email">
-                        <b-form-input type="email" v-model="application.email" id="email"></b-form-input>
-                    </b-form-group>
-                </b-col>
-                <b-col>
-                    <b-form-group label="Contact Number:" label-for="contactNumber">
-                        <b-form-input v-model="application.contactNumber" id="contactNumber"></b-form-input>
-                     </b-form-group>
-                </b-col>
-          </b-row>
-          <b-row>
-              <b-col lg="6" sm="12">
-                    <b-form-group label="Mobile Number:" label-for="mobileNumber">
-                        <b-form-input v-model="application.mobileNumber" id="mobileNumber"></b-form-input>
-                    </b-form-group>
-                </b-col>
-          </b-row>
-          <b-row>
-              <!-- <b-col>
-                    <b-form-group label="Last Name:" label-for="lastName">
-                        <b-form-input v-model="application.lastName" id="lastName"></b-form-input>
-                     </b-form-group>
-                </b-col> -->
-          </b-row>
-          <b-row>
-              <!-- <b-col>
-                    <b-form-group label="Last Name:" label-for="lastName">
-                        <b-form-input v-model="application.lastName" id="lastName"></b-form-input>
-                     </b-form-group>
-                </b-col> -->
-          </b-row>
-          <div slot="modal-footer">
-            <b-button @click="closeDialog">Cancel</b-button>
-            <b-button type="submit">Save</b-button>
-          </div>
-        </b-form>
+        <b-tabs>
+            <b-tab title="Personal Information" active>
+                <b-form>
+                    <PersonalInformationForm v-model="personalInformationData"></PersonalInformationForm>
+                    <div slot="modal-footer">
+                        <b-button @click="closeDialog">Cancel</b-button>
+                        <b-button type="submit">Save</b-button>
+                    </div>
+                </b-form>
+            </b-tab>
+            <b-tab title="Education">
+                <b-form>
+                    <EducationForm v-model="educationData"></EducationForm>
+                    <div slot="modal-footer">
+                        <b-button @click="closeDialog">Cancel</b-button>
+                        <b-button type="submit">Save</b-button>
+                    </div>
+                </b-form>
+            </b-tab>
+            <b-tab title="Working Experience">
+                <b-form>
+                    <WorkingExperienceForm v-model="workingExperienceData"></WorkingExperienceForm>
+                    <div slot="modal-footer">
+                        <b-button @click="closeDialog">Cancel</b-button>
+                        <b-button type="submit">Save</b-button>
+                    </div>
+                </b-form>
+            </b-tab>
+        </b-tabs>
     </b-modal>
   </div>
 </template>
+
 <script>
+import PersonalInformationForm from './application/PersonalInformationForm'
+import EducationForm from './application/EducationForm'
+import WorkingExperienceForm from './application/WorkingExperienceForm'
 import EmployeeApplicationService from '../service/EmployeeApplicationService'
 export default {
   data () {
     return {
+      personalInformationData: {},
+      educationData: {},
+      workingExperienceData: {},
       errors: []
     }
+  },
+  components: {
+    PersonalInformationForm,
+    EducationForm,
+    WorkingExperienceForm
   },
   props: ['showModal', 'application'],
   methods: {
